@@ -1,0 +1,23 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+textarea {
+  resize: none;
+  background-color: rgb(220, 220, 220);
+  padding: 5px;
+  border: 5px solid darkgray;
+  outline:none;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
