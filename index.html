@@ -3,17 +3,28 @@
   <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Title</title>
+    <title>Compiler</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="style.css">
   </head>
   <body>
-    <div class="flex flex-col">
-      <textarea name="code" id="code-input" cols="30" rows="10" wrap="off"></textarea>
-      <button id="compile-button">Компилировать</button>
+    <div class="flex flex-row">
+      <div class="flex flex-col">
+        <textarea name="code" id="code-input" cols="35" rows="30" wrap="off"></textarea>
+        <button id="compile-button">Компилировать</button>
+      </div>
+      <div>
+        <textarea name="code" id="lexemes" cols="20" rows="33" readonly></textarea>
+      </div>
+      <div>
+        <textarea name="code" id="identifiers" cols="20" rows="20" readonly></textarea>
+      </div>
     </div>
-    <script src="compiler.js"></script>
-    <script src="main.js"></script>
+    
+    <script src="src/parser.js"></script>
+    
+    <script src="src/compiler.js"></script>
+    <script src="src/main.js"></script>
     
   </body>
 </html>

@@ -1,0 +1,10 @@
+program
+var 
+  a, b : int;
+  c : bool;
+begin
+  a = 3;
+  if (a > 5) then {
+    read(a, b, c);
+  }
+end
