@@ -20,9 +20,7 @@ compileButton.onclick = () => {
   for (let l of compiler.lexemes) {
     lexemes.value += l;
   }
-
- 
-
+  
   compiler.ids.forEach((value, key) => {
     let id_str = `${key} : ${value}\n`
     identifiers.value += id_str;
