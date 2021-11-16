@@ -3,7 +3,7 @@
 %%
 
 \s+                     /* skip whitespace */
-"\/\/".*                /* skip comments */
+"//".*                  /* skip comments */
 
 "program"               return 'PROGRAM';
 "var"                   return 'VAR';
@@ -29,6 +29,10 @@
 ([-]?[1-9]\d*|0)\b      return 'INT_CONST';
 [a-zA-Z][0-9a-zA-Z]*\b  return 'ID';
 
+"=="                    return '==';
+">="                    return '>=';
+"<="                    return '<=';
+"!="                    return '!=';
 "="                     return '=';
 "*"                     return '*';
 "/"                     return '/';
@@ -37,9 +41,6 @@
 "^"                     return '^';
 ">"                     return '>';
 "<"                     return '<';
-">="                    return '>=';
-"<="                    return '<=';
-"=="                    return '==';
 
 "("                     return '(';
 ")"                     return ')';
@@ -101,17 +102,17 @@ type
     ;
 
 operator
-    : assign_op    {$$ = {type:"assign", value: $1}}
+    : assign_op ';'{$$ = {type:"assign", value: $1}}
     | if_op        {$$ = {type:"if",     value: $1}}
     | for_op       {$$ = {type:"for",    value: $1}}
     | while_op     {$$ = {type:"while",  value: $1}}
-    | read_op      {$$ = {type:"read",   value: $1}}
-    | write_op     {$$ = {type:"write",  value: $1}}
+    | read_op ';'  {$$ = {type:"read",   value: $1}}
+    | write_op ';' {$$ = {type:"write",  value: $1}}
     | block_op     {$$ = {type:"block",  value: $1}}
     ;
 
 assign_op
-    : ID '=' expression ';'                              {$$ = [$1, $3]; setId($1, $3, yylineno)}
+    : ID '=' expression                                  {$$ = [$1, $3]; setId($1, $3, yylineno)}
     ;
 
 if_op
@@ -120,19 +121,19 @@ if_op
     ;
 
 for_op
-    : FOR assign_op TO expression DO operator            {$$ = [$2, $4, $6]}
+    : FOR '(' assign_op ')' TO '(' expression ')' DO operator            {$$ = [$3, $7, $10]}
     ;
 
 while_op
-    : WHILE expression DO operator                       {$$ = [$2, $4]}
+    : WHILE '(' expression ')' DO operator                       {$$ = [$3, $6]}
     ;
 
 read_op
-    : READ '(' id_list ')' ';'                           {$$ = $3}
+    : READ '(' id_list ')'                               {$$ = $3}
     ;
 
 write_op
-    : WRITE '(' expression_list ')' ';'                  {$$ = $3}
+    : WRITE '(' expression_list ')'                      {$$ = $3}
     ;
 
 block_op
@@ -153,8 +154,8 @@ expression
     | expression '>=' expression               {$$ = {type: 'bool_ge',  value: [$1, $3]}}
     | expression '<=' expression               {$$ = {type: 'bool_le',  value: [$1, $3]}}
     | expression '!=' expression               {$$ = {type: 'bool_ne',  value: [$1, $3]}}
-    | NOT '(' expression ')'                   {$$ = {type: 'bool_not', value: $3}}
-    | '(' expression ')'                       {$$ = {type: 'brackets', value: $2}}
+    | NOT expression                           {$$ = {type: 'bool_not', value: $2}}
+    | '(' expression ')'                       {$$ = $2}
     | BOOL_CONST                               {$$ = $1}  
     | INT_CONST                                {$$ = $1}
     | ID                                       {$$ = $1}
@@ -164,6 +165,7 @@ id_list
     : id_list ',' ID                           {$$ = concatList($1, $3)}
     | ID                                       {$$ = $1}
     ;
+
 expression_list
     : expression_list ',' expression           {$$ = concatList($1, $3)}
     | expression                               {$$ = $1}

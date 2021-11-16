@@ -6,21 +6,28 @@
     <title>Compiler</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Source+Code+Pro:wght@600&display=swap" rel="stylesheet">
   </head>
   <body>
-    <div class="flex flex-row">
-      <div class="flex flex-col">
-        <textarea name="code" id="code-input" cols="35" rows="30" wrap="off"></textarea>
-        <button id="compile-button">Компилировать</button>
-      </div>
-      <div>
-        <textarea name="code" id="lexemes" cols="20" rows="33" readonly></textarea>
-      </div>
-      <div>
-        <textarea name="code" id="identifiers" cols="20" rows="20" readonly></textarea>
+    <div class="flex flex-row gap">
+      <textarea id="code-input" cols="40" rows="30" wrap="hard"></textarea>
+      <textarea id="lexemes" cols="20" rows="33" readonly wrap="hard"></textarea>
+      <textarea id="tree" cols="45" rows="33" readonly wrap="hard"></textarea>
+
+      <div class="flex flex-col gap">
+        <div class="flex flex-row gap">
+            <textarea id="identifiers" cols="10" rows="26" readonly wrap="hard"></textarea>
+            <textarea id="assembly" cols="10" rows="26" readonly wrap="hard"></textarea>
+        </div>
+          <textarea id="errors" cols="20" rows="8" readonly wrap="hard"></textarea>
       </div>
     </div>
     
+    
+    <button id="compile-button">Compile</button>
     <script src="src/parser.js"></script>
     
     <script src="src/compiler.js"></script>

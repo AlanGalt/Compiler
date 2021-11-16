@@ -2,14 +2,53 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-family: 'Roboto', sans-serif;
 }
 
+html {
+  height: 100%;
+}
+
+body {
+  background-color: rgb(18, 28, 44);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+
 textarea {
+  scroll-behavior: smooth;
+  overflow-wrap: normal;
+  font-size: 14px;
+  font-family: 'Source Code Pro', monospace;
+  color: rgb(95, 207, 46);
   resize: none;
-  background-color: rgb(220, 220, 220);
-  padding: 5px;
-  border: 5px solid darkgray;
-  outline:none;
+  background-color: rgb(51, 84, 134);
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+}
+
+textarea::-webkit-scrollbar { 
+  width: 5px;
+}
+
+textarea::-webkit-scrollbar-track {
+  background-color: rgb(35, 62, 102);
+  border-radius: 5px;
+}
+
+textarea::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background-color: rgb(95, 207, 46);
+}
+
+textarea:hover {
+  cursor: unset;
 }
 
 .flex {
@@ -18,12 +57,35 @@ textarea {
 
 .flex-col {
   flex-direction: column;
-  align-items: center;
-  gap: 10px;
+  align-items: stretch;
 }
 
 .flex-row {
   flex-direction: row;
-  /* justify-content: center; */
-  gap: 10px;
+  justify-content: center;
 }
+
+.gap {
+  gap: 7px;
+}
+
+#errors {
+  color: rgb(236, 86, 86);
+}
+
+button {
+  width: 220px;
+  height: 50px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 50px;
+  font-size: 20px;
+  background-color: rgb(95, 207, 46);
+  color: rgb(245, 245, 245);
+}
+
+button:hover {
+  cursor: pointer;
+  background-color: rgb(86, 187, 43);
+}
+
