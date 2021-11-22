@@ -84,14 +84,17 @@ class Compiler {
     }
   }
 
-  generateBoolOp(tree, reg1, reg2 = reg1 + 1, then, els, loop, destR) {
+  generateBoolOp(tree, reg1, reg2 = reg1 + 1, then, els, loop) {
     if (tree === Object(tree)) {
+      if (tree.type.split('_')[0] === 'int') {
+        this.generateIntOp(tree, reg1);
+        return;
+      }
       let left = tree.value[0];
       let right = tree.value[1];
-      let args = destR ? [null, null, null, null, destR] : [];
-      this.generateBoolOp(left, reg1, ...args);
-      this.generateBoolOp(right, reg1 + 1);
       let opCode = tree.type.split('_')[1].toUpperCase();
+      this.generateBoolOp(left, reg1); //...args
+      this.generateBoolOp(right, reg1 + 1);
       if (opCode === 'OR' || opCode === 'AND') {
         this.assembly.push(`${opCode} R${reg1}, R${reg2}`);
       } else {
@@ -106,13 +109,8 @@ class Compiler {
         this.assembly.push(`T${this.tCount++}:`);
         
         then ? this.generateCode(then, reg1) : this.assembly.push(`MOV R${reg1}, -1`); // then section
-
-        if (loop === 'for') {
-          this.assembly.push(`LOOP L${this.lCount++}`);
-        } else if (loop === 'while') {
-          this.assembly.push(`JMP L${this.lCount++}`);
-        }
-   
+        
+        if (loop) this.assembly.push(`JMP L${this.lCount++}`);
         this.assembly.push(`F${this.fCount++}:`);
       }
     } else {
@@ -120,10 +118,9 @@ class Compiler {
       if (tree === 'true' || tree === 'false') {
         res = JSON.parse(tree) ? -1 : 0; // -1 to set every bit in R to 1
       } else {
-        res = tree;
+        res = tree;;
       }
-      let dest = destR ? destR : res;
-      this.assembly.push(`MOV R${reg1}, ${dest}`); 
+      this.assembly.push(`MOV R${reg1}, ${res}`); 
     }
   }
 
@@ -136,14 +133,15 @@ class Compiler {
   }
 
   generateFor(value, regNum) {
-    this.generateAssign(value[0], regNum, 'CX');
+    this.generateAssign(value[0], regNum);
+    // this.generateIntOp(value[0][1], regNum);
     this.assembly.push(`L${this.lCount}:`);
-    this.generateIf([value[1], value[2]], regNum, 'for', 'CX');
+    this.generateIf([value[1], value[2]], regNum, true);
   }
 
   generateWhile(value, regNum) {
     this.assembly.push(`L${this.lCount}:`);
-    this.generateIf([value[0], value[1]], regNum, 'while');
+    this.generateIf([value[0], value[1]], regNum, true);
   }
 
   generateRead(value, regNum) {
@@ -155,10 +153,18 @@ class Compiler {
 
   generateWrite(value, regNum) {
     let t;
+    console.log(value);
     for (let i = value.length - 1; i >= 0; i--) {
-      t = value[i].type.split('_')[0][0].toUpperCase() + value[i].type.split('_')[0].slice(1);
-      this[`generate${t}Op`](value[i], regNum);
-      this.assembly.push(`PUSH R${regNum}`);
+      if (value[i] === Object(value[i])) {
+        t = value[i].type.split('_')[0][0].toUpperCase() + value[i].type.split('_')[0].slice(1);
+        this[`generate${t}Op`](value[i], regNum);
+        this.assembly.push(`PUSH R${regNum}`);
+      } else if (value[i] === 'true' || value[i] === 'false') {
+        this.generateBoolOp(value[i], regNum);
+        this.assembly.push(`PUSH R${regNum}`);
+      } else {
+        this.assembly.push(`PUSH ${value[i]}`);
+      }
     }
     this.assembly.push('CALL WRITE');
   }

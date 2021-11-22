@@ -1,0 +1,6 @@
+program
+var 
+  r, a, b, c, d : int;
+begin
+  r = a + (b * c) - d;
+end

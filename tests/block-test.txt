@@ -1,0 +1,10 @@
+program
+var 
+  a, b, c : int;
+begin
+  {
+    a = 5;
+    b = 4 * a;
+    c = a + b;
+  }
+end

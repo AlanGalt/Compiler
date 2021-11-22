@@ -1,6 +1,0 @@
-program
-var 
-  res, a, b, c, d : int;
-begin
-  a = a + d * (b - c);
-end

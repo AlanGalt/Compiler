@@ -1,5 +1,5 @@
 const compileButton = document.getElementById("compile-button");
-const code = document.getElementById("code-input");
+const codeInput = document.getElementById("code-input");
 const lexemes = document.getElementById("lexemes");
 const identifiers = document.getElementById("identifiers");
 const tree = document.getElementById("tree");
@@ -7,14 +7,22 @@ const assembly = document.getElementById("assembly");
 const errors = document.getElementById("errors");
 
 const compiler = new Compiler();
+const editor = CodeMirror.fromTextArea(codeInput, {
+  lineNumbers: true,
+  theme: "material-darker",
+  tabSize: 2
+});
+editor.save();
+
 compileButton.onclick = () => {
+  const code = editor.getValue();
   lexemes.value = '';
   identifiers.value = '';
   tree.value = '';
   assembly.value = '';
   errors.value = '';
 
-  compiler.compile(code.value);
+  compiler.compile(code);
   if (compiler.error) return;
   
   for (let l of compiler.lexemes) {
@@ -93,32 +101,4 @@ function setId(id, value, lineNo) {
   }
 }
 
-
 concatList = (list, add) => Array.isArray(list) ? [...list, add] : [list, add];
-
-
-
-code.onkeydown = (e) => {
-  let TABKEY = 9;
-  if(e.keyCode == TABKEY) {
-      insertAtCursor(code, '    ');
-      e.preventDefault();
-      return false;
-  }
-}
-
-
-function insertAtCursor(myField, myValue) {
-  if (myField.selectionStart || myField.selectionStart == '0') {
-    var startPos = myField.selectionStart;
-    var endPos = myField.selectionEnd;
-    myField.value = myField.value.substring(0, startPos)
-      + myValue
-      + myField.value.substring(endPos, myField.value.length);
-    myField.selectionStart = startPos + myValue.length;
-    myField.selectionEnd = startPos + myValue.length;
-  } else {
-    myField.value += myValue;
-  }
-}
-

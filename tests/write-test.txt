@@ -1,0 +1,7 @@
+program
+var 
+  a, b, c : int;
+begin
+  a = 5;
+  write(3 + 4, true, a);
+end

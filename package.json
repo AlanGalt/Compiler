@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "codemirror": "^5.63.3",
     "jison": "^0.4.18"
   }
 }

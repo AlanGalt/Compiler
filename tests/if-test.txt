@@ -1,0 +1,11 @@
+program
+var 
+  a : int;
+  r : bool;
+begin
+  a = 5;
+  if (a > 3) then 
+    r = false; 
+  else 
+    r = true;
+end

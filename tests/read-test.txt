@@ -1,0 +1,6 @@
+program
+var 
+  a, b, c : int;
+begin
+  read(a, b, c);
+end

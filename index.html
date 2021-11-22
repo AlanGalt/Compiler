@@ -6,14 +6,17 @@
     <title>Compiler</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="style.css">
-
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Source+Code+Pro:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@600&family=Ubuntu&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="src/material-darker.css">
+    <link rel="stylesheet" href="src/codemirror.css">
   </head>
   <body>
     <div class="flex flex-row gap">
-      <textarea id="code-input" cols="40" rows="30" wrap="hard"></textarea>
+      <textarea id="code-input" cols="40" rows="30" wrap="off"></textarea>
       <textarea id="lexemes" cols="25" rows="33" readonly wrap="hard"></textarea>
       <textarea id="tree" cols="45" rows="33" readonly wrap="hard"></textarea>
 
@@ -27,7 +30,9 @@
     </div>
     
     
-    <button id="compile-button">Compile</button>
+    <button id="compile-button">compile</button>
+
+    <script src="node_modules/codemirror/lib/codemirror.js"></script>
     <script src="src/parser.js"></script>
     
     <script src="src/compiler.js"></script>
